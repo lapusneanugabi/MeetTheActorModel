@@ -8,19 +8,26 @@ namespace MeetTheActorModel
     {
         static void Main(string[] args)
         {
+            // display the title
+            Console.WriteLine(Common.Title);
+
             // make an actor system 
-            var actorModelSystem = ActorSystem.Create("MeetTheActorModel");
-            Console.WriteLine($"{nameof(ActorSystem)}: Welcome!");
+            const string actorSystemName = "Hollywood";
+            var actorModelSystem = ActorSystem.Create(actorSystemName);
+            string actorStartTime = actorModelSystem.StartTime.ToString(@"hh\:mm\:ss");
+            Console.WriteLine(Common.MessageTopTemplate, $"{actorStartTime}");
+            Console.WriteLine($"{actorModelSystem.Name}: Welcome! ");
+            Console.WriteLine();
 
-            // create top-level actors within the actor system
-            Props projectionistProps = Props.Create<Projectionist>();
-            IActorRef projectionistActor = actorModelSystem.ActorOf(projectionistProps, nameof(Projectionist));
+            //// create top-level actors within the actor system
+            //Props projectionistProps = Props.Create<Projectionist>();
+            //IActorRef projectionistActor = actorModelSystem.ActorOf(projectionistProps, nameof(Projectionist));
 
 
-            projectionistActor.Tell(new Rest());
-            projectionistActor.Tell(new Operate());
-            projectionistActor.Tell(new Operate());
-            projectionistActor.Tell(new Rest());
+            //projectionistActor.Tell(new Rest());
+            //projectionistActor.Tell(new Operate());
+            //projectionistActor.Tell(new Operate());
+            //projectionistActor.Tell(new Rest());
 
             Console.ReadKey();
 
@@ -29,7 +36,7 @@ namespace MeetTheActorModel
                 Console.WriteLine($"{nameof(ActorSystem)}: I'm terminated!");
             });
 
-            actorModelSystem.Terminate();
+            //actorModelSystem.Terminate();
 
             // blocks the main thread from exiting until the actor system is shut down
             actorModelSystem.WhenTerminated.Wait();
