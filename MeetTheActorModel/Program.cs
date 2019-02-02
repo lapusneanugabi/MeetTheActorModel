@@ -15,7 +15,7 @@ namespace MeetTheActorModel
             IActorRef consoleWriterActor = system.ActorOf(consoleWriterProps, "consoleWriterActor");
 
             // send the message async
-            consoleWriterActor.Tell("> Hello, Actor Model!");
+            consoleWriterActor.Tell("> Hello Actor Model!");
 
             // wait for input and terminate
             Console.Read();
