@@ -1,5 +1,4 @@
 ﻿using Akka.Actor;
-using Akka.Event;
 using System;
 
 namespace MeetTheActorModel
@@ -8,41 +7,19 @@ namespace MeetTheActorModel
     {
         static void Main(string[] args)
         {
-            // display the title
-            Console.WriteLine(Common.Title);
+            // create actor system 
+            ActorSystem system = ActorSystem.Create("actor-system");
 
-            // make an actor system 
-            const string actorSystemName = "Hollywood";
-            var actorModelSystem = ActorSystem.Create(actorSystemName);
-            string actorStartTime = actorModelSystem.StartTime.ToString(@"hh\:mm\:ss");
-            Console.WriteLine(Common.MessageTopTemplate, $"{actorStartTime}");
-            Console.WriteLine($"{actorModelSystem.Name}: Welcome! ");
-            Console.WriteLine();
+            // create top-level actors within the actor system
+            Props consoleWriterProps = Props.Create<ConsoleWriterActor>();
+            IActorRef consoleWriterActor = system.ActorOf(consoleWriterProps, "consoleWriterActor");
 
-            //// create top-level actors within the actor system
-            //Props projectionistProps = Props.Create<Projectionist>();
-            //IActorRef projectionistActor = actorModelSystem.ActorOf(projectionistProps, nameof(Projectionist));
+            // send the message async
+            consoleWriterActor.Tell("> Hello, Actor Model!");
 
-
-            //projectionistActor.Tell(new Rest());
-            //projectionistActor.Tell(new Operate());
-            //projectionistActor.Tell(new Operate());
-            //projectionistActor.Tell(new Rest());
-
-            Console.ReadKey();
-
-            actorModelSystem.RegisterOnTermination(()=>
-            {
-                Console.WriteLine($"{nameof(ActorSystem)}: I'm terminated!");
-            });
-
-            //actorModelSystem.Terminate();
-
-            // blocks the main thread from exiting until the actor system is shut down
-            actorModelSystem.WhenTerminated.Wait();
-
-            Console.WriteLine("Please press any key to terminate.");
-            Console.ReadKey();
+            // wait for input and terminate
+            Console.Read();
+            system.Terminate().Wait();
         }
     }
 }
