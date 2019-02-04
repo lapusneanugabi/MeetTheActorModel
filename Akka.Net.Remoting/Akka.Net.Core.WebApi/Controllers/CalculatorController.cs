@@ -28,5 +28,16 @@ namespace Akka.Net.Succinctly.Core.WebApi.Controllers
             }
             return answer.Value;
         }
+
+        [HttpGet("increment")]
+        public async Task<double> Increment(int step)
+        {
+            AnswerMessage answer = null;
+            for (int i = 0; i < 10; i++)
+            {
+                answer = await CalculatorActor.Sum(new AddMessage(i, step));
+            }
+            return answer.Value;
+        }
     }
 }

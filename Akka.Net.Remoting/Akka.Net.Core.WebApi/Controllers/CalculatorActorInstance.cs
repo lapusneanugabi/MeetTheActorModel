@@ -10,7 +10,7 @@ namespace Akka.Net.Succinctly.Core.WebApi.Controllers
 
         public CalculatorActorInstance(ActorSystem actorSystem)
         {
-            _actor = actorSystem.ActorOf(Props.Create<CalculatorActor>(), "calculator1");
+            _actor = actorSystem.ActorOf(Props.Create<CalculatorActor>(), "calculatorActor");
         }
 
         public async Task<AnswerMessage> Sum(AddMessage message)
